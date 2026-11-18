@@ -105,3 +105,12 @@ WHERE EXISTS (
     JOIN DeliveryEvents de ON de.shipment_id = s.shipment_id
     WHERE s.customer_id = c.customer_id
 );
+
+
+-- ALL example: shipments whose cost is greater than every shipment cost for BlueRoute.
+SELECT shipment_id,shipping_cost
+FROM Shipments
+WHERE shipping_cost > ALL (
+    SELECT shipping_cost FROM Shipments
+    WHERE carrier_id = (SELECT carrier_id FROM Carriers WHERE carrier_name = 'BlueRoute')
+);
